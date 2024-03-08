@@ -1,7 +1,5 @@
 const express = require('express');
 const multer = require('multer');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 const path = require('path');
 
 const app = express();
@@ -10,10 +8,10 @@ const port = 3000;
 // Set up multer for file uploads
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, './uploads/');
+    cb(null, './uploads'); // Specify the destination folder for uploaded images
   },
   filename: function (req, file, cb) {
-    cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+    cb(null, file.originalname); // Use the original filename for the uploaded image
   }
 });
 
@@ -51,7 +49,7 @@ app.post('/register', async (req, res) => {
 });
 
 // Route for image uploads
-app.post('/upload', upload.single('image'), (req, res) => {
+app.post('/upload_images', upload.single('image'), (req, res) => {
   // Handle file upload logic here
   res.status(200).json({ message: 'Image uploaded successfully', filename: req.file.filename });
 });
